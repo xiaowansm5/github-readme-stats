@@ -2,7 +2,6 @@
 .env
 node_modules
 *.lock
-.vscode/
 .idea/
 coverage
 vercel_token
@@ -10,6 +9,7 @@ vercel_token
 # IDE
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 *.code-workspace
 
 .vercel

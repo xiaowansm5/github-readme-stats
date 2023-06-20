@@ -86,6 +86,8 @@ const renderStatsCard = (stats = {}, options = {}) => {
     totalIssues,
     totalPRs,
     totalReviews,
+    totalDiscussionsStarted,
+    totalDiscussionsAnswered,
     contributedTo,
     rank,
   } = stats;
@@ -112,7 +114,7 @@ const renderStatsCard = (stats = {}, options = {}) => {
     locale,
     disable_animations = false,
     rank_icon = "default",
-    show_total_reviews = false,
+    show = [],
   } = options;
 
   const lheight = parseInt(String(line_height), 10);
@@ -161,7 +163,7 @@ const renderStatsCard = (stats = {}, options = {}) => {
     id: "prs",
   };
 
-  if (show_total_reviews) {
+  if (show.includes("reviews")) {
     STATS.reviews = {
       icon: icons.reviews,
       label: i18n.t("statcard.reviews"),
@@ -176,6 +178,24 @@ const renderStatsCard = (stats = {}, options = {}) => {
     value: totalIssues,
     id: "issues",
   };
+
+  if (show.includes("discussions_started")) {
+    STATS.discussions_started = {
+      icon: icons.discussions_started,
+      label: i18n.t("statcard.discussions-started"),
+      value: totalDiscussionsStarted,
+      id: "discussions_started",
+    };
+  }
+  if (show.includes("discussions_answered")) {
+    STATS.discussions_answered = {
+      icon: icons.discussions_answered,
+      label: i18n.t("statcard.discussions-answered"),
+      value: totalDiscussionsAnswered,
+      id: "discussions_answered",
+    };
+  }
+
   STATS.contribs = {
     icon: icons.contribs,
     label: i18n.t("statcard.contribs"),
@@ -308,7 +328,7 @@ const renderStatsCard = (stats = {}, options = {}) => {
         <circle class="rank-circle-rim" cx="-10" cy="8" r="40" />
         <circle class="rank-circle" cx="-10" cy="8" r="40" />
         <g class="rank-text">
-          ${rankIcon(rank_icon, rank?.level)}
+          ${rankIcon(rank_icon, rank?.level, rank?.percentile)}
         </g>
       </g>`;
 

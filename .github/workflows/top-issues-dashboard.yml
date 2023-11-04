@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run top issues action
-        uses: rickstaa/top-issues-action@2f36d7cd80890fa9f3c2d69e154956bb28369742 # v1.3.37
+        uses: rickstaa/top-issues-action@f72e408e2ca430a9d79620f27183d7fd85c7494a # v1.3.64
         env:
           github_token: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -47,7 +47,3 @@ jobs:
           top_bugs: true
           top_features: true
           top_pull_requests: true
-          custom_pull_requests_label: themes
-          top_custom_pull_requests_label: ":star: top themes"
-          top_custom_pull_requests_label_description: Top themes
-          top_custom_pull_requests_label_colour: "#A23599"

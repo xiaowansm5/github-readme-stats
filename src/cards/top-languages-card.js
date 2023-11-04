@@ -87,7 +87,9 @@ const polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
 const cartesianToPolar = (centerX, centerY, x, y) => {
   const radius = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
   let angleInDegrees = radiansToDegrees(Math.atan2(y - centerY, x - centerX));
-  if (angleInDegrees < 0) angleInDegrees += 360;
+  if (angleInDegrees < 0) {
+    angleInDegrees += 360;
+  }
   return { radius, angleInDegrees };
 };
 
@@ -201,7 +203,7 @@ const trimTopLanguages = (topLangs, langs_count, hide) => {
  * @param {number} props.width The card width
  * @param {string} props.color Color of the programming language.
  * @param {string} props.name Name of the programming language.
- * @param {string} props.progress Usage of the programming language in percentage.
+ * @param {number} props.progress Usage of the programming language in percentage.
  * @param {number} props.index Index of the programming language.
  * @returns {string} Programming language SVG node.
  */
@@ -329,7 +331,9 @@ const renderNormalLayout = (langs, width, totalLanguageSize) => {
         width,
         name: lang.name,
         color: lang.color || DEFAULT_LANG_COLOR,
-        progress: ((lang.size / totalLanguageSize) * 100).toFixed(2),
+        progress: parseFloat(
+          ((lang.size / totalLanguageSize) * 100).toFixed(2),
+        ),
         index,
       });
     }),
@@ -379,14 +383,14 @@ const renderCompactLayout = (langs, width, totalLanguageSize, hideProgress) => {
 
   return `
   ${
-    !hideProgress
-      ? `
-  <mask id="rect-mask">
-      <rect x="0" y="0" width="${offsetWidth}" height="8" fill="white" rx="5"/>
-    </mask>
-    ${compactProgressBar}
-  `
-      : ""
+    hideProgress
+      ? ""
+      : `
+      <mask id="rect-mask">
+          <rect x="0" y="0" width="${offsetWidth}" height="8" fill="white" rx="5"/>
+        </mask>
+        ${compactProgressBar}
+      `
   }
     <g transform="translate(0, ${hideProgress ? "0" : "25"})">
       ${createLanguageTextNode({
@@ -806,7 +810,9 @@ const renderTopLanguages = (topLangs, options = {}) => {
     colors,
   });
 
-  if (disable_animations) card.disableAnimations();
+  if (disable_animations) {
+    card.disableAnimations();
+  }
 
   card.setHideBorder(hide_border);
   card.setHideTitle(hide_title);

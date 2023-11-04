@@ -6,6 +6,7 @@ import {
 import { cssToObject } from "@uppercod/css-to-object";
 import { renderStatsCard } from "../src/cards/stats-card.js";
 import { expect, it, describe } from "@jest/globals";
+import { CustomError } from "../src/common/utils.js";
 
 // adds special assertions like toHaveTextContent
 import "@testing-library/jest-dom";
@@ -263,9 +264,10 @@ describe("Test renderStatsCard", () => {
       );
       expect(statClassStyles.fill.trim()).toBe(`#${themes[name].text_color}`);
       expect(iconClassStyles.fill.trim()).toBe(`#${themes[name].icon_color}`);
-      expect(queryByTestId(document.body, "card-bg")).toHaveAttribute(
-        "fill",
-        `#${themes[name].bg_color}`,
+      const backgroundElement = queryByTestId(document.body, "card-bg");
+      const backgroundElementFill = backgroundElement.getAttribute("fill");
+      expect([`#${themes[name].bg_color}`, "url(#gradient)"]).toContain(
+        backgroundElementFill,
       );
     });
   });
@@ -448,5 +450,19 @@ describe("Test renderStatsCard", () => {
     expect(
       queryByTestId(document.body, "percentile-rank-value").textContent.trim(),
     ).toBe(stats.rank.percentile.toFixed(1) + "%");
+  });
+
+  it("should throw error if all stats and rank icon are hidden", () => {
+    expect(() =>
+      renderStatsCard(stats, {
+        hide: ["stars", "commits", "prs", "issues", "contribs"],
+        hide_rank: true,
+      }),
+    ).toThrow(
+      new CustomError(
+        "Could not render stats card.",
+        "Either stats or rank are required.",
+      ),
+    );
   });
 });

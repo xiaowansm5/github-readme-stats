@@ -38,8 +38,10 @@ const data_stats = {
     user: {
       name: stats.name,
       repositoriesContributedTo: { totalCount: stats.contributedTo },
-      contributionsCollection: {
+      commits: {
         totalCommitContributions: stats.totalCommits,
+      },
+      reviews: {
         totalPullRequestReviewContributions: stats.totalReviews,
       },
       pullRequests: { totalCount: stats.totalPRs },
@@ -307,7 +309,11 @@ describe("Test /api/", () => {
 
     expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
     expect(res.send).toBeCalledWith(
-      renderError("Something went wrong", "This username is blacklisted"),
+      renderError(
+        "This username is blacklisted",
+        "Please deploy your own instance",
+        { show_repo_link: false },
+      ),
     );
   });
 

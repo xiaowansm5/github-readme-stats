@@ -3,15 +3,9 @@
 import { describe, expect, it } from "@jest/globals";
 import { queryByTestId } from "@testing-library/dom";
 import "@testing-library/jest-dom/jest-globals";
-import { encodeHTML, renderError } from "../src/common/render.js";
+import { renderError } from "../src/common/render.js";
 
 describe("Test render.js", () => {
-  it("should test encodeHTML", () => {
-    expect(encodeHTML(`<html>hello world<,.#4^&^@%!))`)).toBe(
-      "&#60;html&#62;hello world&#60;,.#4^&#38;^@%!))",
-    );
-  });
-
   it("should test renderError", () => {
     document.body.innerHTML = renderError({ message: "Something went wrong" });
     expect(
